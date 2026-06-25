@@ -1,0 +1,13 @@
+{
+  "name": "qa-automation-assignment",
+  "version": "0.1.0",
+  "description": "E2E automation framework for the Avtoikonom admin panel (Partners management)",
+  "private": true,
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "echo \"No tests configured yet\" && exit 0"
+  }
+}
