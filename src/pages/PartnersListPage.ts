@@ -43,11 +43,13 @@ export class PartnersListPage extends BasePage {
     return this.page.locator('tr').filter({ hasText: name });
   }
 
-  /** Opens the edit form for a partner visible in the current list. */
+  /** Opens the row action menu and launches the edit form for a partner. */
   async openEditFormFor(name: string): Promise<PartnerFormPage> {
     logger.step(`Opening edit form for partner "${name}"`);
+    await this.search(name);
     const row = this.partnerRow(name);
-    await row.getByRole('button').click();
+    await row.locator('img[alt="dots-icon"]').click();
+    await this.page.getByRole('menuitem', { name: 'Edit' }).click();
     const form = new PartnerFormPage(this.page);
     await form.waitForOpen();
     return form;
