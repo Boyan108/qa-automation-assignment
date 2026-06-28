@@ -27,7 +27,6 @@ export class PartnersListPage extends BasePage {
   async search(term: string): Promise<void> {
     logger.debug(`Searching partners for "${term}"`);
     await this.searchInput.fill(term);
-    await this.searchInput.press('Enter');
   }
 
   /** Opens the create-partner modal and returns the form page object. */
