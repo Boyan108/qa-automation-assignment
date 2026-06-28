@@ -13,7 +13,9 @@ export interface Partner {
   /** Local phone number; the form defaults to Bulgaria (+359). */
   phone: string;
   contactPerson: string;
-  description?: string;
+  description: string;
+  /** Absolute path to a logo file for upload (.png/.jpg). */
+  logoPath: string;
 }
 
 /** Prefix applied to all factory-generated partner names for traceability. */

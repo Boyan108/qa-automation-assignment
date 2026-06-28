@@ -1,12 +1,16 @@
+import path from 'node:path';
 import {
   ADDRESS_FRAGMENT,
   ADDRESS_QUERY,
+  DEFAULT_DESCRIPTION,
   DEFAULT_PHONE,
   DEFAULT_SERVICE,
   DEFAULT_SUBSCRIPTION_TIER,
   PARTNER_TYPE_SERVICE,
 } from '@data/static-data';
 import { type Partner, PARTNER_NAME_PREFIX } from '@data/partner.types';
+
+const DEFAULT_LOGO_PATH = path.resolve(process.cwd(), 'tests/fixtures/logo.png');
 
 /**
  * Generates a unique, traceable partner name safe for parallel runs.
@@ -35,6 +39,8 @@ export function partnerFactory(overrides: Partial<Partner> = {}): Partner {
     expectedAddressFragment: ADDRESS_FRAGMENT,
     phone: DEFAULT_PHONE,
     contactPerson: `Contact ${uniqueName}`,
+    description: DEFAULT_DESCRIPTION,
+    logoPath: DEFAULT_LOGO_PATH,
     ...overrides,
   };
 }

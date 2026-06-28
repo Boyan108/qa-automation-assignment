@@ -16,6 +16,7 @@ export class PartnerFormPage {
   private readonly nameInput: Locator;
   private readonly phoneInput: Locator;
   private readonly contactPersonInput: Locator;
+  private readonly descriptionInput: Locator;
   private readonly saveButton: Locator;
 
   private readonly typeDropdown: Dropdown;
@@ -24,10 +25,13 @@ export class PartnerFormPage {
   private readonly addressAutocomplete: AddressAutocomplete;
 
   constructor(private readonly page: Page) {
-    this.modal = page.locator('.ant-modal');
+    this.modal = page.getByRole('dialog').filter({
+      has: page.getByPlaceholder('Write partner name'),
+    });
     this.nameInput = this.modal.getByPlaceholder('Write partner name');
     this.phoneInput = this.modal.locator('input.PhoneInputInput');
     this.contactPersonInput = this.modal.getByPlaceholder('Names of contact person');
+    this.descriptionInput = this.modal.getByPlaceholder('Write description');
     this.saveButton = this.modal.getByRole('button', { name: 'Save' });
 
     this.typeDropdown = new Dropdown(page, page.locator('.ant-select:has(#partner-type-field)'));
@@ -63,12 +67,24 @@ export class PartnerFormPage {
 
     await this.phoneInput.fill(partner.phone);
     await this.contactPersonInput.fill(partner.contactPerson);
+    await this.descriptionInput.fill(partner.description);
+    await this.uploadLogo(partner.logoPath);
 
     return committedAddress;
   }
 
+  private async uploadLogo(logoPath: string): Promise<void> {
+    await this.modal.locator('input[type="file"]').setInputFiles(logoPath);
+
+    const cropModal = this.page.getByRole('dialog').filter({ hasText: 'Edit photo' });
+    await cropModal.waitFor({ state: 'visible' });
+    await cropModal.getByRole('button', { name: 'Save' }).click();
+    await cropModal.waitFor({ state: 'hidden' });
+  }
+
   async save(): Promise<void> {
     logger.step('Saving partner');
+    await this.saveButton.scrollIntoViewIfNeeded();
     await this.saveButton.click();
     await this.modal.waitFor({ state: 'hidden' });
   }

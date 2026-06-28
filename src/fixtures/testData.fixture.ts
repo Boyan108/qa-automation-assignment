@@ -12,7 +12,8 @@ export type TestDataFixtures = {
  * generated partner so parallel runs never collide on shared names.
  */
 export const testDataTest = base.extend<TestDataFixtures>({
-  partner: async (_fixtures, use) => {
+  // eslint-disable-next-line no-empty-pattern -- Playwright requires object destructuring for fixtures
+  partner: async ({}, use) => {
     await use(partnerFactory());
   },
 });

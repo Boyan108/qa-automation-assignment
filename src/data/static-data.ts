@@ -12,8 +12,11 @@ export const PARTNER_TYPE_SERVICE = 'Service';
 /** Default service selected in the multi-select Услуги field. */
 export const DEFAULT_SERVICE = 'Смяна на гуми';
 
-/** Default subscription tier (Абонаментен план). */
-export const DEFAULT_SUBSCRIPTION_TIER = 'Смяна на масло';
+/** Default subscription tier (Абонаментен план). Tiers are filtered by selected services. */
+export const DEFAULT_SUBSCRIPTION_TIER = 'Automation Subscription Tier 65730';
+
+/** Default description for required Description field. */
+export const DEFAULT_DESCRIPTION = 'QA automation test partner';
 
 /** Query typed into Google Places; first suggestion resolves to Sofia, Bulgaria. */
 export const ADDRESS_QUERY = 'Sofia, Bulgaria';
