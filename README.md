@@ -44,23 +44,23 @@ npx playwright test tests/partners/create-partner.spec.ts
 
 ## Environment variables
 
-| Variable | Required | Description |
-|---|---|---|
-| `BASE_URL` | Yes | Admin panel URL (e.g. `https://dev.admin.avtoikonom.com`) |
-| `USER_EMAIL` | Yes | Test account email |
-| `USER_PASSWORD` | Yes | Test account password |
-| `API_BASE_URL` | No | Defaults to `BASE_URL` with `admin.` → `api.` |
-| `LOG_LEVEL` | No | `error` / `warn` / `info` / `debug` (default: `info`) |
+| Variable        | Required | Description                                               |
+| --------------- | -------- | --------------------------------------------------------- |
+| `BASE_URL`      | Yes      | Admin panel URL (e.g. `https://dev.admin.avtoikonom.com`) |
+| `USER_EMAIL`    | Yes      | Test account email                                        |
+| `USER_PASSWORD` | Yes      | Test account password                                     |
+| `API_BASE_URL`  | No       | Defaults to `BASE_URL` with `admin.` → `api.`             |
+| `LOG_LEVEL`     | No       | `error` / `warn` / `info` / `debug` (default: `info`)     |
 
 For CI, set `BASE_URL`, `USER_EMAIL`, and `USER_PASSWORD` as GitHub Secrets.
 
 ## Test coverage
 
-| Spec | Flow |
-|---|---|
-| `tests/auth/login.spec.ts` | Login with valid credentials |
+| Spec                                    | Flow                                                      |
+| --------------------------------------- | --------------------------------------------------------- |
+| `tests/auth/login.spec.ts`              | Login with valid credentials                              |
 | `tests/partners/create-partner.spec.ts` | Create partner with all required fields + list validation |
-| `tests/partners/update-partner.spec.ts` | Create → update contact person → assert persistence |
+| `tests/partners/update-partner.spec.ts` | Create → update contact person → assert persistence       |
 
 ## Assumptions
 
@@ -88,4 +88,21 @@ For CI, set `BASE_URL`, `USER_EMAIL`, and `USER_PASSWORD` as GitHub Secrets.
 
 ## CI
 
-GitHub Actions runs quality gates then e2e on push/PR to `main`. Failed runs upload Playwright HTML report and traces as artifacts.
+GitHub Actions (`.github/workflows/e2e.yml`) runs quality gates, then e2e, on push/PR to `main`. Failed runs upload Playwright HTML report and traces as artifacts.
+
+Set GitHub Secrets: `BASE_URL`, `USER_EMAIL`, `USER_PASSWORD`.
+
+### Known issue — GitHub account billing lock
+
+The workflow is configured correctly, but jobs may **never start** if the repository owner's GitHub account is locked for billing — even though this is a **public** repository and standard Linux runners are normally free:
+
+> The job was not started because your account is locked due to a billing issue.
+
+That message is **account-level**, not a framework or workflow defect. Fix it under **GitHub → Settings → Billing and plans**, then use **Re-run all jobs** on the Actions tab.
+
+Until CI runs again, use the same checks locally:
+
+```bash
+npm run validate   # typecheck + lint + format (quality job)
+npm test           # full suite (e2e job; requires .env)
+```
