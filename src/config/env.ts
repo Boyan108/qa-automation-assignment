@@ -39,6 +39,7 @@ export const env = {
   },
   isCI: process.env.CI === 'true' || process.env.CI === '1',
   logLevel: optionalEnv('LOG_LEVEL', 'info'),
+  apiBaseURL: optionalEnv('API_BASE_URL', requireEnv('BASE_URL').replace('admin.', 'api.')),
 } as const;
 
 export type Env = typeof env;
