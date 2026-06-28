@@ -1,6 +1,6 @@
 import { defineConfig, devices } from '@playwright/test';
 import { env } from './src/config/env';
-import { TIMEOUTS } from './src/config/constants';
+import { TIMEOUTS, STORAGE_STATE_PATH } from './src/config/constants';
 
 /**
  * Playwright configuration.
@@ -45,9 +45,19 @@ export default defineConfig({
   },
 
   projects: [
+    // Logs in once and persists the session before the main suite runs.
+    {
+      name: 'setup',
+      testDir: './src/setup',
+      testMatch: /.*\.setup\.ts/,
+    },
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      use: {
+        ...devices['Desktop Chrome'],
+        storageState: STORAGE_STATE_PATH,
+      },
+      dependencies: ['setup'],
     },
   ],
 });

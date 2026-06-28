@@ -2,6 +2,10 @@ import { test, expect } from '@playwright/test';
 import { LoginPage } from '@pages/LoginPage';
 import { env } from '@config/env';
 
+// This spec exercises the login flow itself, so it must start from a clean,
+// unauthenticated state rather than the shared persisted session.
+test.use({ storageState: { cookies: [], origins: [] } });
+
 test.describe('Authentication', () => {
   test('logs in with valid credentials', async ({ page }) => {
     const loginPage = new LoginPage(page);
